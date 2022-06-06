@@ -8,9 +8,8 @@
 # Method: GET
 # URL: /guides/1
 # Response: { <guide_json> }
-#
-#
-from flask import Flask
+
+from flask import Flask, jsonify
 from sqlalchemy import text
 from flask_sqlalchemy import SQLAlchemy
 from guides_sql import CREATE_TABLE, INSERT_VALUES
@@ -39,14 +38,37 @@ class Guide(db.Model):
 
 @app.route("/guides")
 def get_guides():
-    # TODO допишите представления
-    pass
+    user_list = Guide.query.all()
+
+    response = []
+
+    for user in user_list:
+        response.append({
+            "id": user.id,
+            "surname": user.surname,
+            "full_name": user.full_name,
+            "tours_count": user.tours_count,
+            "bio": user.bio,
+            "is_pro": user.is_pro,
+            "company": user.company,
+        })
+
+    return jsonify(response)
 
 
 @app.route("/guides/<int:gid>")
-def get_guide(gid):
-    # TODO допишите представления
-    pass
+def get_guide(gid: int):
+    user = Guide.query.get(gid)
+
+    return jsonify({
+            "id": user.id,
+            "surname": user.surname,
+            "full_name": user.full_name,
+            "tours_count": user.tours_count,
+            "bio": user.bio,
+            "is_pro": user.is_pro,
+            "company": user.company,
+        })
 
 # чтобы увидеть результат работы функций
 # запустите фаил и
