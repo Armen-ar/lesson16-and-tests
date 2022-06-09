@@ -28,8 +28,7 @@ class Guide(db.Model):
 
 
 def delete_guides():
-    # TODO напишите запрос здесь
-    pass
+    Guide.query.filter(Guide.id.in_([1, 4, 7])).delete(False)
 
 
 delete_guides()
